@@ -9,16 +9,43 @@ user.assign_attributes(
 
 user.save
 
-user = User.find_or_initialize_by(id: 2)
+issue = Issue.find_or_initialize_by(id: 1, user_id: 1)
+issue.assign_attributes(
+  title: 'Issue',
+  content: 'This is context'
+)
+issue.save
 
+issue = Issue.find_or_initialize_by(id: 2, user_id: 1)
+issue.assign_attributes(
+  title: 'Issue 2',
+  content: 'This is context 2'
+)
+issue.save
+
+user = User.find_or_initialize_by(id: 2)
 user.assign_attributes(
   email: "user_2@example.com",
   password: 'password',
   name: 'User_2',
   nickname: 'Super User 2'
 )
-
 user.save
+
+issue = Issue.find_or_initialize_by(id: 3, user_id: 2)
+issue.assign_attributes(
+  title: 'Issue 3',
+  content: 'This is context 3'
+)
+issue.save
+
+issue = Issue.find_or_initialize_by(id: 4, user_id: 2)
+issue.assign_attributes(
+  title: 'Issue 3',
+  content: 'This is context 3',
+  manager_id: 3
+)
+issue.save
 
 manager = User.find_or_initialize_by(id: 3)
 

@@ -32,6 +32,19 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end
 
+group :test do
+  # testing framework
+  gem 'rspec-rails', '~> 3.7'
+  # Strategies for cleaning databases
+  gem 'database_cleaner', '~> 1.6', '>= 1.6.2'
+  gem 'factory_bot_rails', '~> 4.8', '>= 4.8.2'
+  gem 'shoulda-matchers', '~> 3.1'
+  # Ffaker generates dummy data
+  gem 'ffaker', '~> 2.2'
+  # Validate your Rails JSON API's JSON
+  gem 'json_matchers', '~> 0.7.2'
+end
+
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
