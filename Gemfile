@@ -16,6 +16,10 @@ gem 'puma', '~> 3.7'
 gem 'jbuilder', '~> 2.5'
 # For use with client side single page apps
 gem 'devise_token_auth', '~> 0.1.31'
+# Simple authorization solution for Rails. All permissions are stored in a
+# single location.
+gem 'cancancan', '~> 2.0'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
