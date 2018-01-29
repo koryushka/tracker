@@ -1,11 +1,13 @@
 class Issue < ApplicationRecord
+  self.per_page = 25
+
   belongs_to :user
   belongs_to :manager, class_name: 'User', foreign_key: :manager_id,
              optional: true
 
   validates :title, presence: true
   validates :content, presence: true
-  validates :manager_id, 
+  validates :manager_id,
             presence: { message: I18n.t('errors.validation.manager')},
             if: ->(obj){ obj.resolved? || obj.progress? }
 

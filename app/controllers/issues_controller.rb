@@ -9,6 +9,7 @@ class IssuesController < BaseApiController
   def index
     @issues = IssuesFetcher.new(user: current_user, status: params[:status],
                                 assigned_to_me: params[:assigned_to_me]).run
+                                .paginate(page: params[:page])
   end
 
   def create

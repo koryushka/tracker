@@ -19,11 +19,14 @@ gem 'devise_token_auth', '~> 0.1.31'
 # Simple authorization solution for Rails. All permissions are stored in a
 # single location.
 gem 'cancancan', '~> 2.0'
+# will_paginate provides a simple API for performing paginated queries
+gem 'will_paginate', '~> 3.1', '>= 3.1.6'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
