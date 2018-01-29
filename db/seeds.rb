@@ -39,14 +39,6 @@ issue.assign_attributes(
 )
 issue.save
 
-issue = Issue.find_or_initialize_by(id: 4, user_id: 2)
-issue.assign_attributes(
-  title: 'Issue 3',
-  content: 'This is context 3',
-  manager_id: 3
-)
-issue.save
-
 manager = User.find_or_initialize_by(id: 3)
 
 manager.assign_attributes(
@@ -58,3 +50,21 @@ manager.assign_attributes(
 )
 
 manager.save
+
+issue = Issue.find_or_initialize_by(id: 4, user_id: 2)
+issue.assign_attributes(
+  title: 'Issue 3',
+  content: 'This is context 3',
+  manager_id: 3
+  status: 1
+)
+issue.save
+
+issue = Issue.find_or_initialize_by(id: 5, user_id: 2)
+issue.assign_attributes(
+  title: 'Issue 3',
+  content: 'This is context 3',
+  manager_id: 3
+  status: 3
+)
+issue.save
