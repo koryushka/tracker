@@ -16,7 +16,7 @@ class ManagerIssuesFetcher < BaseIssuesFetcher
   private
 
   def only_assigned_to_me?
-    !assigned_to_me.nil?
+    !!assigned_to_me
   end
 
   attr_writer :assigned_to_me

@@ -5,7 +5,7 @@ class Issue < ApplicationRecord
 
   belongs_to :user
   belongs_to :manager, class_name: 'User', foreign_key: :manager_id,
-                       optional: true, inverse_of: :manager
+                       optional: true
 
   validates :title, presence: true
   validates :content, presence: true

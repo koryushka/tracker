@@ -80,7 +80,9 @@ RSpec.describe ManagerIssuesFetcher do
 
         context 'resolved and progress' do
           let(:statuses) { 'resolved,pending' }
-          it { is_expected.to match_array([resolved_issue, pending_issue]) }
+          it do
+            is_expected.to match_array([resolved_issue, pending_issue])
+          end
         end
       end
     end

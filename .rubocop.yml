@@ -7,6 +7,8 @@ Rails:
   Enabled: true
 Style/Documentation:
   Enabled: false
+Style/DoubleNegation:
+  Enabled: false
 Metrics/LineLength:
   Max: 80
   IgnoredPatterns: ['\A^\s+[#]|#']
@@ -29,3 +31,7 @@ Metrics/MethodLength:
 Rails/HasManyOrHasOneDependent:
   Exclude:
     - app/models/user.rb
+Rails/InverseOf:
+  Exclude:
+    - app/models/user.rb
+    - app/models/issue.rb
