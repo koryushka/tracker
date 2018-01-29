@@ -1,0 +1,31 @@
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - db/migrate/*
+  TargetRubyVersion: 2.3
+Rails:
+  Enabled: true
+Style/Documentation:
+  Enabled: false
+Metrics/LineLength:
+  Max: 80
+  IgnoredPatterns: ['\A^\s+[#]|#']
+Style/MixinUsage:
+  Enabled: false
+Style/NumericLiterals:
+  Enabled: false
+Style/SignalException:
+  EnforcedStyle: semantic
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+Metrics/BlockLength:
+  Exclude:
+    - config/environments/*.rb
+    - config/initializers/*.rb
+    - spec/**/*.rb
+Metrics/MethodLength:
+  Exclude:
+    - app/models/ability.rb
+Rails/HasManyOrHasOneDependent:
+  Exclude:
+    - app/models/user.rb

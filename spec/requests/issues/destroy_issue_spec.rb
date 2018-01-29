@@ -1,14 +1,16 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Issues", type: :request do
+require 'rails_helper'
+
+RSpec.describe 'Issues', type: :request do
   describe 'PATCH update' do
     context 'as authenticated' do
       let(:headers) do
-        role.create_new_auth_token.merge('accept' => "application/json")
+        role.create_new_auth_token.merge('accept' => 'application/json')
       end
 
       before(:each) do
-        delete "/issues/#{issue.id}", { headers: headers }
+        delete "/issues/#{issue.id}", headers: headers
       end
 
       context 'manager' do
@@ -16,7 +18,7 @@ RSpec.describe "Issues", type: :request do
         let(:role) { user }
 
         context 'unable to destroy issue' do
-          let(:issue) { create(:issue, manager: role)}
+          let(:issue) { create(:issue, manager: role) }
 
           it 'returns permission error message' do
             expect(response.body).to match(/Not enough permissions/)
@@ -42,7 +44,6 @@ RSpec.describe "Issues", type: :request do
           it 'returns status code 204' do
             expect(response).to have_http_status(:no_content)
           end
-
         end
 
         context 'unable to destroy other users` issues' do
@@ -65,7 +66,7 @@ RSpec.describe "Issues", type: :request do
 
         before(:each) do
           delete "/issues/#{issue.id}",
-               { headers: {'accept' => "application/json"} }
+                 headers: { 'accept' => 'application/json' }
         end
 
         it 'returns not authorized error' do

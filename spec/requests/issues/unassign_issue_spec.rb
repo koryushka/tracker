@@ -1,15 +1,17 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Issues", type: :request do
+require 'rails_helper'
+
+RSpec.describe 'Issues', type: :request do
   describe 'PATCH unassign' do
     context 'as authenticated' do
       let(:headers) do
-        role.create_new_auth_token.merge('accept' => "application/json")
+        role.create_new_auth_token.merge('accept' => 'application/json')
       end
 
       before(:each) do
         patch "/issues/#{issue.id}/unassign",
-              { params: {}, headers: headers }
+              params: {}, headers: headers
       end
 
       context 'user' do
@@ -17,11 +19,11 @@ RSpec.describe "Issues", type: :request do
         let(:role) { user }
 
         context 'get permission error' do
-          let(:issue) { create(:issue)}
+          let(:issue) { create(:issue) }
 
           before(:each) do
             patch "/issues/#{issue.id}/unassign",
-                  { params: {}, headers: headers }
+                  params: {}, headers: headers
           end
 
           it 'returns error message' do
@@ -69,12 +71,12 @@ RSpec.describe "Issues", type: :request do
               let(:issue) { create(:issue, manager: role, status: :progress) }
 
               it 'return error message' do
-               expect(response.body)
-                 .to match(/Manager can`t be unassigned from the issue/)
+                expect(response.body)
+                  .to match(/Manager can`t be unassigned from the issue/)
               end
 
               it 'returns status code 422' do
-               expect(response).to have_http_status(:unprocessable_entity)
+                expect(response).to have_http_status(:unprocessable_entity)
               end
             end
 
@@ -86,7 +88,7 @@ RSpec.describe "Issues", type: :request do
               end
 
               it 'returns status code 422' do
-                 expect(response).to have_http_status(:unprocessable_entity)
+                expect(response).to have_http_status(:unprocessable_entity)
               end
             end
           end
@@ -99,7 +101,7 @@ RSpec.describe "Issues", type: :request do
         let(:issue) { create(:issue) }
         before(:each) do
           patch "/issues/#{issue.id}/unassign",
-               { headers: {'accept' => "application/json"} }
+                headers: { 'accept' => 'application/json' }
         end
 
         it 'returns not authorized error message' do

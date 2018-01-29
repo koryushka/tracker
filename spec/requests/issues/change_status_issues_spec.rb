@@ -1,15 +1,17 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Issues", type: :request do
+require 'rails_helper'
+
+RSpec.describe 'Issues', type: :request do
   describe 'PATCH change_status' do
     context 'as authenticated' do
       let(:headers) do
-        role.create_new_auth_token.merge('accept' => "application/json")
+        role.create_new_auth_token.merge('accept' => 'application/json')
       end
 
       before(:each) do
         patch "/issues/#{issue.id}/change_status",
-              { params: {issue: {status: status}}, headers: headers }
+              params: { issue: { status: status } }, headers: headers
       end
 
       context 'user' do
@@ -17,7 +19,7 @@ RSpec.describe "Issues", type: :request do
         let(:role) { user }
 
         context 'get permission error' do
-          let(:issue) { create(:issue, manager: nil)}
+          let(:issue) { create(:issue, manager: nil) }
 
           it 'returns error message' do
             expect(response.body).to match(/Not enough permissions/)
@@ -33,7 +35,7 @@ RSpec.describe "Issues", type: :request do
         let(:role) { manager }
 
         context 'changes issue status if assigned to it' do
-          let(:issue) { create(:issue, manager: role)}
+          let(:issue) { create(:issue, manager: role) }
           let(:status) { 'progress' }
 
           it 'returns issue with updated status' do
@@ -89,8 +91,8 @@ RSpec.describe "Issues", type: :request do
 
         before(:each) do
           patch "/issues/#{issue.id}/change_status",
-               { params: valid_params,
-                headers: {'accept' => "application/json"} }
+                params: valid_params,
+                headers: { 'accept' => 'application/json' }
         end
 
         it 'returns not authorized error' do

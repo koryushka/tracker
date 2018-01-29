@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ManagerIssuesFetcher < BaseIssuesFetcher
   attr_reader :assigned_to_me
 
@@ -14,7 +16,7 @@ class ManagerIssuesFetcher < BaseIssuesFetcher
   private
 
   def only_assigned_to_me?
-    !!assigned_to_me
+    !assigned_to_me.nil?
   end
 
   attr_writer :assigned_to_me

@@ -1,23 +1,24 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Issues", type: :request do
+require 'rails_helper'
+
+RSpec.describe 'Issues', type: :request do
   describe 'GET show' do
     context 'as authenticated' do
       let(:headers) do
-        role.create_new_auth_token.merge('accept' => "application/json")
+        role.create_new_auth_token.merge('accept' => 'application/json')
       end
 
-      before(:each) { get "/issues/#{issue.id}", { headers: headers } }
+      before(:each) { get "/issues/#{issue.id}", headers: headers }
 
       context 'manager' do
         let(:manager) { create(:user, :manager) }
         let(:role) { manager }
 
         context 'able to view any issue' do
-          let(:issue) { create(:issue)}
+          let(:issue) { create(:issue) }
 
           it 'returns issue' do
-            issue = JSON.parse(response.body)['issue']
             expect(response).to match_response_schema('issue')
           end
 
@@ -37,10 +38,9 @@ RSpec.describe "Issues", type: :request do
         let(:role) { user }
 
         context 'able to view self issues' do
-          let(:issue) { create(:issue, user: role)}
+          let(:issue) { create(:issue, user: role) }
 
           it 'returns issue' do
-            issue = JSON.parse(response.body)['issue']
             expect(response).to match_response_schema('issue')
           end
 
@@ -55,7 +55,7 @@ RSpec.describe "Issues", type: :request do
         end
 
         context 'unable to view other users` issues' do
-          let(:issue) { create(:issue)}
+          let(:issue) { create(:issue) }
 
           it 'returns permission error' do
             expect(response.body).to match(/Not enough permissions/)
@@ -74,7 +74,7 @@ RSpec.describe "Issues", type: :request do
 
         before(:each) do
           get "/issues/#{issue.id}",
-               { headers: {'accept' => "application/json"} }
+              headers: { 'accept' => 'application/json' }
         end
 
         it 'returns not authorized error message' do

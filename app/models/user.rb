@@ -1,12 +1,15 @@
-class User < ActiveRecord::Base
+# frozen_string_literal: true
+
+class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
-          :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
 
   has_many :issues, dependent: :destroy
-  has_many :managed_issues, foreign_key: :manager_id, class_name: 'Issue'
+  has_many :managed_issues, foreign_key: :manager_id, class_name: 'Issue',
+                            inverse_of: :issues
 
-  enum role:{
+  enum role: {
     user: 0,
     manager: 1
   }

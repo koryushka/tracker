@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IssuesController < BaseApiController
   load_and_authorize_resource
 
@@ -9,7 +11,7 @@ class IssuesController < BaseApiController
   def index
     @issues = IssuesFetcher.new(user: current_user, status: params[:status],
                                 assigned_to_me: params[:assigned_to_me]).run
-                                .paginate(page: params[:page])
+                           .paginate(page: params[:page])
   end
 
   def create

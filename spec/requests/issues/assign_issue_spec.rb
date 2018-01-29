@@ -1,21 +1,23 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Issues", type: :request do
+require 'rails_helper'
+
+RSpec.describe 'Issues', type: :request do
   describe 'PATCH assign' do
     context 'as authenticated' do
       let(:headers) do
-        role.create_new_auth_token.merge('accept' => "application/json")
+        role.create_new_auth_token.merge('accept' => 'application/json')
       end
       context 'user' do
         let(:user) { create(:user) }
         let(:role) { user }
 
         context 'get permission error' do
-          let(:issue) { create(:issue, manager: nil)}
+          let(:issue) { create(:issue, manager: nil) }
 
           before(:each) do
             patch "/issues/#{issue.id}/assign",
-                  { params: {}, headers: headers }
+                  params: {}, headers: headers
           end
 
           it 'returns error message' do
@@ -34,11 +36,11 @@ RSpec.describe "Issues", type: :request do
 
         context 'assigns issue to himself' do
           context 'if it`s not assigned to someone else' do
-            let(:issue) { create(:issue, manager: nil)}
+            let(:issue) { create(:issue, manager: nil) }
 
             before(:each) do
               patch "/issues/#{issue.id}/assign",
-                    { params: {}, headers: headers }
+                    params: {}, headers: headers
             end
 
             it 'assigns issue to manager' do
@@ -59,7 +61,7 @@ RSpec.describe "Issues", type: :request do
 
             before(:each) do
               patch "/issues/#{issue.id}/assign",
-                    { params: {}, headers: headers }
+                    params: {}, headers: headers
             end
 
             it 'returns error message' do
@@ -85,7 +87,7 @@ RSpec.describe "Issues", type: :request do
 
       before(:each) do
         patch "/issues/#{issue.id}/assign",
-             { headers: {'accept' => "application/json"} }
+              headers: { 'accept' => 'application/json' }
       end
 
       it 'returns not authorized error message' do

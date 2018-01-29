@@ -1,10 +1,12 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Issues", type: :request do
+require 'rails_helper'
+
+RSpec.describe 'Issues', type: :request do
   describe 'GET index' do
     context 'as authenticated' do
       let(:headers) do
-        role.create_new_auth_token.merge('accept' => "application/json")
+        role.create_new_auth_token.merge('accept' => 'application/json')
       end
 
       let!(:progress_issue) { create(:issue, user: role, status: 1) }
@@ -17,7 +19,7 @@ RSpec.describe "Issues", type: :request do
         let(:user) { create(:user) }
         let(:role) { user }
 
-        before(:each) { get "/issues", { params: params, headers: headers} }
+        before(:each) { get '/issues', params: params, headers: headers }
 
         context 'returns issues' do
           let(:params) { nil }
@@ -45,112 +47,111 @@ RSpec.describe "Issues", type: :request do
       context 'user' do
         let(:user) { create(:user) }
         let(:role) { user }
-        before(:each) {  }
+        before(:each) {}
 
-        context "fetch all users` issues" do
+        context 'fetch all users` issues' do
           it 'returns http status 200' do
-            get "/issues", { headers: headers }
+            get '/issues', headers: headers
 
             expect(response).to have_http_status(200)
           end
 
           it 'returns 3 issues' do
-            get "/issues", { headers: headers }
+            get '/issues', headers: headers
             body = JSON.parse(response.body)['issues']
 
             expect(body.count).to eq(3)
           end
 
           it 'matches schema' do
-            get "/issues", { headers: headers }
+            get '/issues', headers: headers
 
-            expect(response).to match_response_schema("issues")
+            expect(response).to match_response_schema('issues')
           end
         end
 
-        context "filtes" do
+        context 'filtes' do
           context 'by statuses' do
-
             it 'pending' do
-              get "/issues", { params: {status: 'pending'}, headers: headers}
+              get '/issues', params: { status: 'pending' }, headers: headers
               expect(response).to have_http_status(200)
               body = JSON.parse(response.body)['issues']
 
               expect(body.count).to eq(1)
-              expect(response).to match_response_schema("issues")
+              expect(response).to match_response_schema('issues')
               expect(body.first['title']).to eq(pending_issue.title)
             end
 
             it 'progress' do
-              get "/issues", { params: {status: 'progress'}, headers: headers}
+              get '/issues', params: { status: 'progress' }, headers: headers
               expect(response).to have_http_status(200)
               body = JSON.parse(response.body)['issues']
 
               expect(body.count).to eq(1)
-              expect(response).to match_response_schema("issues")
+              expect(response).to match_response_schema('issues')
               expect(body.first['title']).to eq(progress_issue.title)
             end
 
             it 'resolved' do
-              get "/issues", { params: {status: 'resolved'}, headers: headers}
+              get '/issues', params: { status: 'resolved' }, headers: headers
               expect(response).to have_http_status(200)
               body = JSON.parse(response.body)['issues']
 
               expect(body.count).to eq(1)
-              expect(response).to match_response_schema("issues")
+              expect(response).to match_response_schema('issues')
               expect(body.first['title']).to eq(resolved_issue.title)
             end
 
             it 'pending and progress' do
-              get "/issues",
-                  { params: {status: 'pending,progress'}, headers: headers}
+              get '/issues',
+                  params: { status: 'pending,progress' }, headers: headers
               expect(response).to have_http_status(200)
               body = JSON.parse(response.body)['issues']
 
               expect(body.count).to eq(2)
-              expect(response).to match_response_schema("issues")
-              expect(body.detect {|el| el['status'] == 'pending'}['title'])
+              expect(response).to match_response_schema('issues')
+              expect(body.detect { |el| el['status'] == 'pending' }['title'])
                 .to eq(pending_issue.title)
-              expect(body.detect {|el| el['status'] == 'progress'}['title'])
+              expect(body.detect { |el| el['status'] == 'progress' }['title'])
                 .to eq(progress_issue.title)
             end
 
             it 'pending and resolved' do
-              get "/issues",
-                  { params: {status: 'pending,resolved'}, headers: headers}
+              get '/issues',
+                  params: { status: 'pending,resolved' }, headers: headers
               expect(response).to have_http_status(200)
               body = JSON.parse(response.body)['issues']
 
               expect(body.count).to eq(2)
-              expect(response).to match_response_schema("issues")
-              expect(body.detect {|el| el['status'] == 'pending'}['title'])
+              expect(response).to match_response_schema('issues')
+              expect(body.detect { |el| el['status'] == 'pending' }['title'])
                 .to eq(pending_issue.title)
-              expect(body.detect {|el| el['status'] == 'resolved'}['title'])
+              expect(body.detect { |el| el['status'] == 'resolved' }['title'])
                 .to eq(resolved_issue.title)
             end
 
             it 'progress and resolved' do
-              get "/issues",
-                  { params: { status: 'progress,resolved'}, headers: headers}
+              get '/issues',
+                  params: { status: 'progress,resolved' }, headers: headers
               expect(response).to have_http_status(200)
               body = JSON.parse(response.body)['issues']
 
               expect(body.count).to eq(2)
-              expect(response).to match_response_schema("issues")
-              expect(body.detect {|el| el['status'] == 'progress'}['title'])
+              expect(response).to match_response_schema('issues')
+              expect(body.detect { |el| el['status'] == 'progress' }['title'])
                 .to eq(progress_issue.title)
-              expect(body.detect {|el| el['status'] == 'resolved'}['title'])
+              expect(body.detect { |el| el['status'] == 'resolved' }['title'])
                 .to eq(resolved_issue.title)
             end
 
             it 'progress and invalid' do
-              get "/issues",
-                  { params: { status: 'progress,invalid'}, headers: headers}
+              get '/issues',
+                  params: { status: 'progress,invalid' }, headers: headers
               expect(response).to have_http_status(200)
               body = JSON.parse(response.body)['issues']
 
               expect(body.count).to eq(1)
-              expect(response).to match_response_schema("issues")
+              expect(response).to match_response_schema('issues')
               expect(body.first['title']).to eq(progress_issue.title)
             end
           end
@@ -161,30 +162,29 @@ RSpec.describe "Issues", type: :request do
         let(:manager) { create(:user, :manager) }
         let(:role) { manager }
 
-        context "fetch all issues" do
+        context 'fetch all issues' do
           it do
-            get "/issues", { params: {}, headers: headers}
+            get '/issues', params: {}, headers: headers
             expect(response).to have_http_status(200)
             body = JSON.parse(response.body)['issues']
 
             expect(body.count).to eq(6)
-            expect(response).to match_response_schema("issues")
+            expect(response).to match_response_schema('issues')
           end
         end
 
-        context "fetch all assigned to manager issues" do
+        context 'fetch all assigned to manager issues' do
           let!(:assigned_issue) { create(:issue, manager: manager) }
           it do
-            get "/issues", { params: {assigned_to_me: true}, headers: headers }
+            get '/issues', params: { assigned_to_me: true }, headers: headers
             expect(response).to have_http_status(200)
             body = JSON.parse(response.body)['issues']
 
             expect(body.count).to eq(1)
-            expect(response).to match_response_schema("issues")
+            expect(response).to match_response_schema('issues')
             expect(body.first['title']).to eq(assigned_issue.title)
           end
         end
-
       end
     end
 
@@ -200,7 +200,7 @@ RSpec.describe "Issues", type: :request do
         end
 
         before(:each) do
-          get '/issues', { headers: {'accept' => "application/json"} }
+          get '/issues', headers: { 'accept' => 'application/json' }
         end
 
         it 'returns not authorized error message' do

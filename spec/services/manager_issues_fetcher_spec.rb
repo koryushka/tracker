@@ -1,11 +1,15 @@
 # frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ManagerIssuesFetcher do
   describe '.run' do
     let(:manager) { create(:user, :manager) }
 
-    subject { described_class.new(user: manager, status: statuses, assigned_to_me: assigned_to_me).run }
+    subject do
+      described_class.new(user: manager, status: statuses,
+                          assigned_to_me: assigned_to_me).run
+    end
     context 'fetches all issues' do
       let(:assigned_to_me) { false }
       let(:statuses) { nil }
@@ -24,9 +28,7 @@ RSpec.describe ManagerIssuesFetcher do
       let!(:issues) { create_list(:issue, 3) }
       let!(:assigned_issues) { create_list(:issue, 3, manager: manager) }
 
-      it{is_expected.to match_array(assigned_issues)}
-
-
+      it { is_expected.to match_array(assigned_issues) }
     end
 
     context 'filters issues by statues' do
@@ -39,15 +41,14 @@ RSpec.describe ManagerIssuesFetcher do
         context 'single status' do
           let(:statuses) { 'invalid' }
           it do
-             is_expected.to match_array([pending_issue, progress_issue,
-                                         resolved_issue])
+            is_expected.to match_array([pending_issue, progress_issue,
+                                        resolved_issue])
           end
         end
 
         context 'multiple statues' do
           let(:statuses) { 'invalid,progress' }
           it { is_expected.to match_array([progress_issue]) }
-
         end
       end
 

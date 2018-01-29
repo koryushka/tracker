@@ -1,10 +1,12 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Issues", type: :request do
+require 'rails_helper'
+
+RSpec.describe 'Issues', type: :request do
   describe 'PATCH update' do
     context 'as authenticated' do
       let(:headers) do
-        role.create_new_auth_token.merge('accept' => "application/json")
+        role.create_new_auth_token.merge('accept' => 'application/json')
       end
 
       context 'manager' do
@@ -12,7 +14,7 @@ RSpec.describe "Issues", type: :request do
         let(:role) { user }
 
         context 'unable to update issue' do
-          let(:issue) { create(:issue, manager: role)}
+          let(:issue) { create(:issue, manager: role) }
 
           let(:valid_params) do
             {
@@ -25,7 +27,7 @@ RSpec.describe "Issues", type: :request do
 
           before(:each) do
             patch "/issues/#{issue.id}",
-                  { params: valid_params, headers: headers }
+                  params: valid_params, headers: headers
           end
 
           it 'returns permission error message' do
@@ -57,7 +59,7 @@ RSpec.describe "Issues", type: :request do
 
             before(:each) do
               patch "/issues/#{issue.id}",
-                    { params: valid_params, headers: headers }
+                    params: valid_params, headers: headers
             end
 
             it 'updates issue' do
@@ -85,7 +87,7 @@ RSpec.describe "Issues", type: :request do
 
             before(:each) do
               patch "/issues/#{issue.id}",
-                    { params: valid_params, headers: headers }
+                    params: valid_params, headers: headers
             end
 
             it 'returns issue with initial manager' do
@@ -111,7 +113,7 @@ RSpec.describe "Issues", type: :request do
 
               before(:each) do
                 patch "/issues/#{issue.id}",
-                      { params: invalid_params, headers: headers }
+                      params: invalid_params, headers: headers
               end
 
               it 'returns error message' do
@@ -135,7 +137,7 @@ RSpec.describe "Issues", type: :request do
 
               before(:each) do
                 patch "/issues/#{issue.id}",
-                      { params: invalid_params, headers: headers }
+                      params: invalid_params, headers: headers
               end
 
               it 'returns error message' do
@@ -163,7 +165,7 @@ RSpec.describe "Issues", type: :request do
 
           before(:each) do
             patch "/issues/#{issue.id}",
-                  { params: valid_params, headers: headers }
+                  params: valid_params, headers: headers
           end
 
           it 'returns permission error' do
@@ -191,8 +193,8 @@ RSpec.describe "Issues", type: :request do
 
         before(:each) do
           patch "/issues/#{issue.id}",
-               { params: valid_params,
-                headers: {'accept' => "application/json"} }
+                params: valid_params,
+                headers: { 'accept' => 'application/json' }
         end
 
         it 'returns not authorized error mcreateessage' do

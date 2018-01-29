@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BaseIssuesFetcher
   attr_reader :user, :statuses
 
@@ -42,8 +44,7 @@ class BaseIssuesFetcher
   end
 
   def fetch_status(status)
-    return [] unless status.present?
+    return [] if status.blank?
     status.split(',')
   end
-
 end

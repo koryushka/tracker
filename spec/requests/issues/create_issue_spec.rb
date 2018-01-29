@@ -1,10 +1,12 @@
-require "rails_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Issues", type: :request do
+require 'rails_helper'
+
+RSpec.describe 'Issues', type: :request do
   describe 'POST create' do
     context 'as authenticated' do
       let(:headers) do
-        role.create_new_auth_token.merge('accept' => "application/json")
+        role.create_new_auth_token.merge('accept' => 'application/json')
       end
       context 'manager' do
         let(:user) { create(:user, :manager) }
@@ -21,7 +23,7 @@ RSpec.describe "Issues", type: :request do
           end
 
           before(:each) do
-            post '/issues', { params: valid_params, headers: headers }
+            post '/issues', params: valid_params, headers: headers
           end
 
           it 'returns permission error message' do
@@ -49,7 +51,7 @@ RSpec.describe "Issues", type: :request do
           end
 
           before(:each) do
-            post '/issues', { params: valid_params, headers: headers }
+            post '/issues', params: valid_params, headers: headers
           end
 
           it 'creates issue' do
@@ -72,7 +74,7 @@ RSpec.describe "Issues", type: :request do
             end
 
             before(:each) do
-              post '/issues', { params: invalid_params, headers: headers }
+              post '/issues', params: invalid_params, headers: headers
             end
 
             it 'returns error message' do
@@ -94,7 +96,7 @@ RSpec.describe "Issues", type: :request do
             end
 
             before(:each) do
-              post '/issues', { params: invalid_params, headers: headers }
+              post '/issues', params: invalid_params, headers: headers
             end
 
             it 'returns error message' do
@@ -106,7 +108,6 @@ RSpec.describe "Issues", type: :request do
             end
           end
         end
-
       end
     end
 
@@ -123,8 +124,8 @@ RSpec.describe "Issues", type: :request do
 
         before(:each) do
           post '/issues',
-               { params: valid_params,
-                headers: {'accept' => "application/json"} }
+               params: valid_params,
+               headers: { 'accept' => 'application/json' }
         end
 
         it 'returns not authorized error message' do

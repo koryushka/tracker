@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IssuesFetcher
   attr_reader :user, :status, :assigned_to_me
 

@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 class Issue < ApplicationRecord
   self.per_page = 25
 
   belongs_to :user
   belongs_to :manager, class_name: 'User', foreign_key: :manager_id,
-             optional: true
+                       optional: true, inverse_of: :manager
 
   validates :title, presence: true
   validates :content, presence: true
   validates :manager_id,
-            presence: { message: I18n.t('errors.validation.manager')},
-            if: ->(obj){ obj.resolved? || obj.progress? }
+            presence: { message: I18n.t('errors.validation.manager') },
+            if: ->(obj) { obj.resolved? || obj.progress? }
 
-  enum status:{
+  enum status: {
     pending: 0,
     progress: 1,
     resolved: 2
