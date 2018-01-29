@@ -68,8 +68,8 @@ RSpec.describe "Issues", type: :request do
               expect(response.body).to match(/Invalid status/)
             end
 
-            it 'returns status code 400' do
-              expect(response).to have_http_status(:bad_request)
+            it 'returns status code 422' do
+              expect(response).to have_http_status(:unprocessable_entity)
             end
           end
         end

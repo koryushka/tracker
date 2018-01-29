@@ -1,89 +1,62 @@
 class IssuesController < BaseApiController
-  before_action :fetch_issue, only: %i[update show assign unassign change_status destroy]
+  load_and_authorize_resource
+
+  before_action :fetch_issue,
+                only: %i[update show assign unassign change_status destroy]
 
   attr_reader :issue
 
   def index
-    @issues = IssuesFetcher.new(user: current_user, status: status,
+    @issues = IssuesFetcher.new(user: current_user, status: params[:status],
                                 assigned_to_me: params[:assigned_to_me]).run
   end
 
   def create
-    if can? :create, Issue
-      @issue = current_user.issues.build(issue_params)
-      if issue.save
-        render :show, status: :created
-      else
-        render json: { errors: issue.errors.full_messages }, status: 400
-
-      end
+    @issue = current_user.issues.build(issue_params)
+    if issue.save
+      render :show, status: :created
     else
-      render json: { error: 'Not enough permissions'}, status: 403
+      render_validation_errors(issue)
     end
   end
 
   def destroy
-    if can? :destroy, issue
-      issue.destroy
-      head :no_content
-    else
-      render json: { error: 'Not enough permissions'}, status: 403
-    end
+    issue.destroy
+    head :no_content
   end
 
   def update
-    if can? :update, issue
-      if issue.update(issue_params)
-        render :show, status: 200
-      else
-        render json: { errors: issue.errors.full_messages }, status: 400
-      end
-    else
-      render json: { error: 'Not enough permissions'}, status: 403
-    end
-  end
-
-  def show
-    if can? :read, issue
+    if issue.update(issue_params)
       render :show
     else
-      render json: { error: 'Not enough permissions'}, status: 403
+      render_validation_errors(issue)
     end
   end
 
+  def show; end
+
   def assign
-    if can? :assign, issue
-      if issue.update(manager_id: current_user.id)
-        render :show
-      else
-        render json: { errors: issue.errors.full_messages }, status: 422
-      end
+    if issue.update(manager_id: current_user.id)
+      render :show
     else
-      render json: { error: 'Not enough permissions'}, status: 403
+      render_validation_errors(issue)
     end
   end
 
   def unassign
-    if can? :unassign, issue
-      if issue.update(manager_id: nil)
-        render :show
-      else
-        render json: { errors: issue.errors.full_messages }, status: 422
-      end
+    if issue.update(manager_id: nil)
+      render :show
     else
-      render json: { error: 'Not enough permissions'}, status: 403
+      render_validation_errors(issue)
     end
   end
 
   def change_status
-    if can? :change_status, issue
-      if issue.change_status(status: params.require(:issue).permit(:status)[:status])
-        render :show
-      else
-        render json: { errors: issue.errors.full_messages }, status: 400
-      end
+    status = params.require(:issue).permit(:status)[:status]
+    if issue.change_status(status: status)
+      render :show
     else
-      render json: { error: 'Not enough permissions'}, status: 403
+      render_validation_errors(issue)
     end
   end
 
@@ -94,12 +67,6 @@ class IssuesController < BaseApiController
   end
 
   def issue_params
-    @issue_params ||= params.require(:issue).permit(:title, :content)
-  end
-
-  def status
-    status = params[:status]
-    return unless status.present?
-    status
+    params.require(:issue).permit(:title, :content)
   end
 end

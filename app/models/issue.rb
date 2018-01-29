@@ -5,8 +5,9 @@ class Issue < ApplicationRecord
 
   validates :title, presence: true
   validates :content, presence: true
-
-  validates :manager_id, presence: { message: 'can`t be unassigned from the issue unless it`s in pending status'}, if: ->(obj){ obj.resolved? || obj.progress? }
+  validates :manager_id, 
+            presence: { message: I18n.t('errors.validation.manager')},
+            if: ->(obj){ obj.resolved? || obj.progress? }
 
   enum status:{
     pending: 0,

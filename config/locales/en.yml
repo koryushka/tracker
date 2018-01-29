@@ -31,3 +31,8 @@
 
 en:
   hello: "Hello world"
+  errors:
+    permissions:
+      not_enough: Not enough permissions
+    validation:
+      manager: can`t be unassigned from the issue unless it`s in pending status
