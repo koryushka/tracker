@@ -34,7 +34,7 @@ class IssuesController < BaseApiController
   def update
     if can? :update, issue
       if issue.update(issue_params)
-        render :show
+        render :show, status: 200
       else
         render json: { errors: issue.errors.full_messages }, status: 400
       end

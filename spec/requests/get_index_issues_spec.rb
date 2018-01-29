@@ -148,5 +148,32 @@ RSpec.describe "Issues", type: :request do
       end
     end
 
+    context 'as not authenticated' do
+      context 'unable to create issue' do
+        let(:valid_params) do
+          {
+            issue: {
+              title: 'Title',
+              content: 'Content'
+            }
+          }
+        end
+
+        before(:each) do
+          post '/issues',
+               { params: valid_params,
+                headers: {'accept' => "application/json"} }
+        end
+
+        it 'returns not authorized error message' do
+          expect(response.body)
+            .to match(/You need to sign in or sign up before continuing./)
+        end
+
+        it 'returns status code 401' do
+          expect(response).to have_http_status(:unauthorized)
+        end
+      end
+    end
   end
 end
