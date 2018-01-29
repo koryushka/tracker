@@ -21,6 +21,14 @@ RSpec.describe UserIssuesFetcher do
         expect(subject).to match_array([])
       end
 
+      it 'descending ordering' do
+        create(:issue, user: user)
+        old_issue = create(:issue, user: user)
+        old_issue.update(created_at: Time.current - 1.day)
+
+        expect(subject.first.created_at).to be > subject.second.created_at
+      end
+
       context 'filters issues by statues' do
         let!(:pending_issue) { create(:issue, user: user) }
         let!(:progress_issue) { create(:issue, user: user, status: 1) }
