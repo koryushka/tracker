@@ -58,7 +58,7 @@ issue.assign_attributes(
   title: 'Issue 3',
   content: 'This is context 3',
   manager_id: 3,
-  status: 1
+  status: :progress
 )
 issue.save
 
@@ -67,6 +67,6 @@ issue.assign_attributes(
   title: 'Issue 3',
   content: 'This is context 3',
   manager_id: 3,
-  status: 3
+  status: :resolved
 )
 issue.save

@@ -28,9 +28,6 @@ Metrics/BlockLength:
 Metrics/MethodLength:
   Exclude:
     - app/models/ability.rb
-Rails/HasManyOrHasOneDependent:
-  Exclude:
-    - app/models/user.rb
 Rails/InverseOf:
   Exclude:
     - app/models/user.rb

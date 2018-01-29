@@ -48,6 +48,7 @@ group :test do
   # Strategies for cleaning databases
   gem 'database_cleaner', '~> 1.6', '>= 1.6.2'
   gem 'factory_bot_rails', '~> 4.8', '>= 4.8.2'
+  # Making tests easy on the fingers and eyes
   gem 'shoulda-matchers', '~> 3.1'
   # Ffaker generates dummy data
   gem 'ffaker', '~> 2.2'

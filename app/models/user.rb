@@ -6,7 +6,6 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
 
   has_many :issues, dependent: :destroy
-  has_many :managed_issues, foreign_key: :manager_id, class_name: 'Issue'
 
   enum role: {
     user: 0,
