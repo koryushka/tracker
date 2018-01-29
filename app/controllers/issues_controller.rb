@@ -1,11 +1,11 @@
 class IssuesController < BaseApiController
-  before_action :fetch_issue, only: %i[update show assign unassign change_status destory]
+  before_action :fetch_issue, only: %i[update show assign unassign change_status destroy]
 
   attr_reader :issue
 
   def index
     @issues = IssuesFetcher.new(user: current_user, status: status,
-                                assigned_to_me: assigned_to_me).run
+                                assigned_to_me: params[:assigned_to_me]).run
   end
 
   def create
@@ -23,7 +23,7 @@ class IssuesController < BaseApiController
   end
 
   def destroy
-    if can? :destroy, Issue
+    if can? :destroy, issue
       issue.destroy
       head :no_content
     else
@@ -56,7 +56,7 @@ class IssuesController < BaseApiController
       if issue.update(manager_id: current_user.id)
         render :show
       else
-        render json: { errors: issue.errors.full_messages }, status: 400
+        render json: { errors: issue.errors.full_messages }, status: 422
       end
     else
       render json: { error: 'Not enough permissions'}, status: 403
@@ -68,7 +68,7 @@ class IssuesController < BaseApiController
       if issue.update(manager_id: nil)
         render :show
       else
-        render json: { errors: issue.errors.full_messages }, status: 400
+        render json: { errors: issue.errors.full_messages }, status: 422
       end
     else
       render json: { error: 'Not enough permissions'}, status: 403
@@ -94,17 +94,12 @@ class IssuesController < BaseApiController
   end
 
   def issue_params
-    @issue_params ||= params.require(:issue)
-                            .permit(:id, :title, :content)
+    @issue_params ||= params.require(:issue).permit(:title, :content)
   end
 
   def status
     status = params[:status]
     return unless status.present?
     status
-  end
-
-  def assigned_to_me
-    params[:assigned_to_me]
   end
 end

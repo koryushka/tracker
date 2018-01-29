@@ -178,7 +178,8 @@ RSpec.describe "Issues", type: :request do
     end
 
     context 'as not authenticated' do
-      context 'unable to create issue' do
+      context 'unable to update issue' do
+        let(:issue) { create(:issue) }
         let(:valid_params) do
           {
             issue: {
@@ -189,13 +190,12 @@ RSpec.describe "Issues", type: :request do
         end
 
         before(:each) do
-          post '/issues',
-
+          patch "/issues/#{issue.id}",
                { params: valid_params,
                 headers: {'accept' => "application/json"} }
         end
 
-        it 'returns not authorized error message' do
+        it 'returns not authorized error mcreateessage' do
           expect(response.body)
             .to match(/You need to sign in or sign up before continuing./)
         end

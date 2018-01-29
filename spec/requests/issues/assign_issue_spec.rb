@@ -29,8 +29,8 @@ RSpec.describe "Issues", type: :request do
       end
 
       context 'manager' do
-        let(:user) { create(:user, :manager) }
-        let(:role) { user }
+        let(:manager) { create(:user, :manager) }
+        let(:role) { manager }
 
         context 'assigns issue to himself' do
           context 'if it`s not assigned to someone else' do
@@ -80,21 +80,12 @@ RSpec.describe "Issues", type: :request do
   end
 
   context 'as not authenticated' do
-    context 'unable to create issue' do
-      let(:valid_params) do
-        {
-          issue: {
-            title: 'Title',
-            content: 'Content'
-          }
-        }
-      end
+    context 'unable to assign issue' do
+      let(:issue) { create(:issue) }
 
       before(:each) do
-        post '/issues',
-
-             { params: valid_params,
-              headers: {'accept' => "application/json"} }
+        patch "/issues/#{issue.id}/assign",
+             { headers: {'accept' => "application/json"} }
       end
 
       it 'returns not authorized error message' do

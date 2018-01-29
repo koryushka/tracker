@@ -149,7 +149,7 @@ RSpec.describe "Issues", type: :request do
     end
 
     context 'as not authenticated' do
-      context 'unable to create issue' do
+      context 'unable to get list of issues' do
         let(:valid_params) do
           {
             issue: {
@@ -160,9 +160,7 @@ RSpec.describe "Issues", type: :request do
         end
 
         before(:each) do
-          post '/issues',
-               { params: valid_params,
-                headers: {'accept' => "application/json"} }
+          get '/issues', { headers: {'accept' => "application/json"} }
         end
 
         it 'returns not authorized error message' do
