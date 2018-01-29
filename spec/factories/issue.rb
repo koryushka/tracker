@@ -2,8 +2,7 @@
 FactoryBot.define do
   factory :issue do
     association :user
-    # association :manager, factory: :user, primary_key: :manager_id
-    manager_id 1
+    association :manager, factory: :user
     title { FFaker::Lorem.sentence }
     content { FFaker::Lorem.paragraph }
     status 0

@@ -60,12 +60,41 @@ RSpec.describe "Issues", type: :request do
                     { params: valid_params, headers: headers }
             end
 
-            it 'creates issue' do
+            it 'updates issue' do
               expect(response.body).to match(/Updated Title/)
             end
 
             it 'returns status code 200' do
               expect(response).to have_http_status(:ok)
+            end
+          end
+
+          context 'unable to change assigned manager of self issues' do
+            let(:initial_manager) { create(:user, :manager) }
+            let(:issue_manager) { issue.manager }
+
+            let(:valid_params) do
+              {
+                issue: {
+                  title: 'Updated Title',
+                  content: 'Updated Content',
+                  manager_id: initial_manager.id
+                }
+              }
+            end
+
+            before(:each) do
+              patch "/issues/#{issue.id}",
+                    { params: valid_params, headers: headers }
+            end
+
+            it 'returns issue with initial manager' do
+              manager_id = JSON.parse(response.body)['issue']['manager_id']
+              expect(manager_id).to eq(issue_manager.id)
+            end
+
+            it 'doesn`t change issue`s manager' do
+              expect(issue_manager).to eq(issue.manager)
             end
           end
 
@@ -161,6 +190,7 @@ RSpec.describe "Issues", type: :request do
 
         before(:each) do
           post '/issues',
+
                { params: valid_params,
                 headers: {'accept' => "application/json"} }
         end
